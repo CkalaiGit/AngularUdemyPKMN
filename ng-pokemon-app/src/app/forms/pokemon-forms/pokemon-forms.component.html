@@ -1,0 +1,86 @@
+@if (pokemon) {
+<form [formGroup]="pokemonForm" (ngSubmit)="onSubmit()">
+  <div class="row">
+    <div class="col s8 offset-s2">
+      <div class="card-panel">
+
+        <!-- Pokemon name -->
+        <div class="form-group">
+          <label for="name">Nom</label>
+          <input type="text" class="form-control" id="name" formControlName="name">
+
+          @if (pokemonForm.get('name')?.invalid && pokemonForm.get('name')?.touched) {
+          <div class="card-panel red accent-1">
+            Le nom du pokémon est requis (1-25).
+          </div>
+          }
+        </div>
+
+        <!-- Pokemon picture -->
+        @if(this.isAddForm) {
+        <div class="form-group">
+          <label for="picture">Nom</label>
+          <input type="url" class="form-control" id="picture" formControlName="picture">
+
+          @if (pokemonForm.get('picture')?.invalid && pokemonForm.get('picture')?.touched) {
+          <div class="card-panel red accent-1">
+            L'image du pokemon est requise !
+          </div>
+          }
+        </div>
+        }
+        <!-- Pokemon hp -->
+        <div class="form-group">
+          <label for="hp">Point de vie</label>
+          <input type="number" class="form-control" id="hp" formControlName="hp">
+          @if (pokemonForm.get('hp')?.invalid && pokemonForm.get('hp')?.touched) {
+          <div class="card-panel red accent-1">
+            Les points de vie du pokémon sont compris entre 0 et 999.
+          </div>
+          }
+        </div>
+
+        <!-- Pokemon cp -->
+        <div class="form-group">
+          <label for="cp">Dégâts</label>
+          <input type="number" class="form-control" id="cp" formControlName="cp">
+          @if (pokemonForm.get('cp')?.invalid && pokemonForm.get('cp')?.touched) {
+          <div class="card-panel red accent-1">
+            Les dégâts du pokémon sont compris entre 0 et 99.
+          </div>
+          }
+        </div>
+
+        <!-- Pokemon types -->
+        <div class="form-group">
+          <label for="types">Types</label>
+          @for (type of types; track type) {
+          <p>
+            <label>
+              <input type="checkbox" class="filled-in" id="{{ type }}" [value]="type" [checked]="hasType(type)"
+                [disabled]="!isTypesValid()" (change)="selectType($event, type)" />
+              <span [attr.for]="type">
+                <div class="{{ type | pokemonTypeColor }}">
+                  {{ type }}
+                </div>
+              </span>
+            </label>
+          </p>
+          }
+        </div>
+
+        <!-- Submit button -->
+        <div class="divider"></div>
+        <div class="section center">
+          <button type="submit" class="waves-effect waves-light btn" [disabled]="!pokemonForm.valid">
+            VALIDER
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</form>
+} @else {
+<h3 class="center">Aucun pokémon à éditer...</h3>
+}

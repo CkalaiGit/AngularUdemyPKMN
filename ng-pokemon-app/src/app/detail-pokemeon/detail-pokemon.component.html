@@ -4,7 +4,7 @@
         <h2 class="header center">{{ pokemon.name }}</h2>
         <div class="card horizontal hoverable">
           <div class="card-image">
-            <img [src]="pokemon.picture">
+            <img [src]="pokemon.picture" alt="Image du Pokémon">
           </div>
           <div class="card-stacked">
             <div class="card-content">
@@ -38,7 +38,9 @@
               </table>
             </div>
             <div class="card-action">
-              <a (click)="goBack()">Retour</a>
+              <a (click)="goBack()" (keyup.enter)="goBack()" tabindex="0">Retour</a>
+              <a (click)="go2EditPokemon(pokemon)" (keyup.enter)="go2EditPokemon(pokemon)" tabindex="0">Editer</a>
+              <a (click)="deletePokemon(pokemon)"(keyup.enter)="deletePokemon(pokemon)" tabindex="0">Supprimer</a>
             </div>
           </div>
         </div>

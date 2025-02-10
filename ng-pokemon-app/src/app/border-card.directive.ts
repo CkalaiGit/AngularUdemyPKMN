@@ -1,13 +1,14 @@
 import { Directive, ElementRef, HostListener, Input} from '@angular/core';
 
 @Directive({
+  // eslint-disable-next-line @angular-eslint/directive-selector
   selector: '[pkmnBorderCard]',
   standalone: true
 })
 export class BorderCardDirective {
 
   constructor(private el : ElementRef) {
-    this.setHeight(180);
+    this.setHeight(210);
     this.setBorder('#f5f5f5')
   }
 

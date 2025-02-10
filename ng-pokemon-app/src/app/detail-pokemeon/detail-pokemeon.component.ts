@@ -1,38 +1,48 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Pokemon } from '../models/pokemon-model';
-import { POKEMONS } from '../data/mock-pokemons';
 import { PokemonTypeColorPipe } from "../pokemon-type-color.pipe";
 import { DatePipe } from '@angular/common';
+import { PokemonService } from '../services/pokemon.service';
 
 @Component({
-  selector: 'app-detail-pokemeon',
+  selector: 'app-detail-pokemon',
   standalone: true,
   imports: [PokemonTypeColorPipe, DatePipe],
-  templateUrl: './detail-pokemeon.component.html',
+  templateUrl: './detail-pokemon.component.html',
   styles: ``
 })
-export class DetailPokemeonComponent  implements OnInit {
+export class DetailPokemonComponent implements OnInit {
 
-  
+
   pokemonId: number | null | undefined;
-  pokemenList: Pokemon[] | undefined;
   currentPokemon: Pokemon | undefined;
-  pokemon: Pokemon| undefined;
+  pokemon: Pokemon | undefined;
 
-  constructor(private currentRoute: ActivatedRoute, private router: Router) {}
+  constructor(private currentRoute: ActivatedRoute, private router: Router, private pokemonService: PokemonService) { }
 
   ngOnInit(): void {
-    this.pokemenList = POKEMONS;
-    const pokemonIdString = this.currentRoute.snapshot.paramMap.get('id'); 
-    this.pokemonId = pokemonIdString ? +pokemonIdString : null; 
-    this.pokemon  = this.pokemenList.find(pkmn => this.pokemonId === pkmn.id);
+    const pokemonId = this.currentRoute.snapshot.paramMap.get('id');
+    if (pokemonId) {
+        this.pokemonService.getPokemonById(+pokemonId).subscribe(
+          pokemon => this.pokemon = pokemon
+      )
+    }
+  }
 
+  deletePokemon(pokemon: Pokemon) {
+    this.pokemonService.deletePokemonById(pokemon.id!).subscribe(
+      () => this.goBack()
+    )
   }
 
   goBack() {
-     this.router.navigate(['/pokemons']);
-    }
+    this.router.navigate(['/pokemons']);
+  }
+
+  go2EditPokemon(pokemon: Pokemon) {
+    this.router.navigate(['/edit/pokemon/', pokemon.id]);
+  }
 
 
 
